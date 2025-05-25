@@ -1,0 +1,60 @@
+-- Compare total rides and average ride duration by user type
+SELECT
+  member_casual,
+  COUNT(*) AS total_rides,
+  ROUND(AVG(ride_duration),2 ) AS avg_ride_duration_minutes
+FROM `cyclistic-analysis-453511.cyclistic_2022.trips_cleaned`
+GROUP BY member_casual;
+-- Analyze bike type usage by user type
+SELECT
+  member_casual,
+  rideable_type,
+  COUNT(*) AS total_rides,
+  ROUND(AVG(ride_duration),2) AS avg_ride_duration_minutes
+FROM `cyclistic-analysis-453511.cyclistic_2022.trips_cleaned`
+GROUP BY member_casual,rideable_type;
+-- Ride by day of week
+SELECT
+  member_casual,
+  day_of_week,
+  COUNT(*) AS total_rides
+FROM `cyclistic-analysis-453511.cyclistic_2022.trips_cleaned`
+GROUP BY member_casual, day_of_week
+ORDER BY
+  CASE day_of_week
+    WHEN 'Sunday' THEN 1
+    WHEN 'Monday' THEN 2
+    WHEN 'Tuesday' THEN 3
+    WHEN 'Wednesday' THEN 4
+    WHEN 'Thursday' THEN 5
+    WHEN 'Friday' THEN 6
+    WHEN 'Saturday' THEN 7
+  END;
+  -- Ride by hour of day
+  SELECT
+    member_casual,
+    start_hour,
+    COUNT(*) AS total_rides
+  FROM `cyclistic-analysis-453511.cyclistic_2022.trips_cleaned`
+  GROUP BY member_casual,start_hour
+  ORDER BY start_hour;
+  -- Ride by month
+  SELECT
+    member_casual,
+    month,
+    COUNT(*) AS total_rides,
+    ROUND(AVG(ride_duration),2) AS avg_ride_duration_minutes
+  FROM `cyclistic-analysis-453511.cyclistic_2022.trips_cleaned`
+  GROUP BY member_casual,month
+  ORDER BY month;
+  -- Top 10 routes by user type
+  SELECT
+    member_casual,
+    start_station_name,
+    end_station_name,
+    COUNT(*) AS total_rides
+  FROM `cyclistic-analysis-453511.cyclistic_2022.trips_cleaned`
+  WHERE start_station_name IS NOT NULL AND end_station_name IS NOT NULL
+  GROUP BY member_casual,start_station_name, end_station_name
+  ORDER BY total_rides DESC
+  LIMIT 10;
