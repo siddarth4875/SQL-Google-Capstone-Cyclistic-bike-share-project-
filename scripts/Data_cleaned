@@ -1,0 +1,37 @@
+-- Create a cleaned table with additional calculated feilds
+CREATE TABLE `cyclistic-analysis-453511.cyclistic_2022.trips_cleaned` AS
+SELECT
+  ride_id,
+  rideable_type,
+  started_at,
+  ended_at,
+  start_station_name,
+  start_station_id,
+  end_station_name,
+  end_station_id,
+  start_lat,
+  start_lng,
+  end_lat,
+  end_lng,
+  member_casual,
+  -- Calculate ride duration in minutes 
+  ROUND(TIMESTAMP_DIFF(ended_at,started_at,SECOND) / 60.0,1 ) AS ride_duration,
+  -- Extract day of the week
+  CASE
+    WHEN EXTRACT(DAYOFWEEK FROM started_at) = 1 THEN 'Sunday'
+    WHEN EXTRACT(DAYOFWEEK FROM started_at) = 2 THEN 'Monday'
+    WHEN EXTRACT(DAYOFWEEK FROM started_at) = 3 THEN 'Tuesday'
+    WHEN EXTRACT(DAYOFWEEK FROM started_at) = 4 THEN 'Wednesday'
+    WHEN EXTRACT(DAYOFWEEK FROM started_at) = 5 THEN 'Thrusday'
+    WHEN EXTRACT(DAYOFWEEK FROM started_at) = 6 THEN 'Friday'
+    ELSE 'Saturday'
+  END AS day_of_week,
+-- Extract hour of the day
+EXTRACT(HOUR FROM started_at) AS start_hour,
+-- Extract month
+EXTRACT (MONTH FROM started_at) AS month,
+FROM  `cyclistic-analysis-453511.cyclistic_2022.trips_combine`
+-- Remove invalid rides: null ride_id,negative or zero duration, or excessively long rides (>24 hours)
+WHERE ride_id IS NOT NULL
+AND TIMESTAMP_DIFF(ended_at,started_at,SECOND) > 0
+AND TIMESTAMP_DIFF(ended_at,started_at,SECOND) <= 24*60*60;
