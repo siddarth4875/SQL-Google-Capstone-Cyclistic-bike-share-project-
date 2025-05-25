@@ -1,0 +1,53 @@
+CREATE TABLE `cyclistic-analysis-453511.cyclistic_2022.trips_combine` AS
+SELECT * FROM `cyclistic-analysis-453511.cyclistic_2022.trips_202201`
+UNION ALL
+SELECT * FROM `cyclistic-analysis-453511.cyclistic_2022.trips_202202`
+UNION ALL
+SELECT * FROM `cyclistic-analysis-453511.cyclistic_2022.trips_202203`
+UNION ALL
+SELECT * FROM `cyclistic-analysis-453511.cyclistic_2022.trips_202204`
+UNION ALL
+SELECT * FROM `cyclistic-analysis-453511.cyclistic_2022.trips_202205`
+UNION ALL
+SELECT * FROM `cyclistic-analysis-453511.cyclistic_2022.trips_202206`
+UNION ALL
+SELECT * FROM `cyclistic-analysis-453511.cyclistic_2022.trips_202207`
+UNION ALL
+SELECT * FROM `cyclistic-analysis-453511.cyclistic_2022.trips_202208`
+UNION ALL
+SELECT * FROM `cyclistic-analysis-453511.cyclistic_2022.trips_202209`
+UNION ALL
+SELECT * FROM `cyclistic-analysis-453511.cyclistic_2022.trips_202210`
+UNION ALL
+SELECT * FROM `cyclistic-analysis-453511.cyclistic_2022.trips_202211`
+UNION ALL
+SELECT * FROM `cyclistic-analysis-453511.cyclistic_2022.trips_202212`
+-- Check data types and column names
+SELECT column_name,data_type
+FROM  `cyclistic-analysis-453511.cyclistic_2022.INFORMATION_SCHEMA.COLUMNS`
+WHERE table_name = 'trips_combine'
+-- Count null value in each column
+SELECT
+COUNTIF(ride_id IS NULL) AS null_ride_id,
+COUNTIF(rideable_type IS NULL) AS null_rideable_type,
+COUNTIF(started_at IS NULL) AS null_started_at,
+COUNTIF(ended_at IS NULL) AS null_ended_at,
+COUNTIF(start_station_name IS NULL) AS null_start_station_name,
+COUNTIF(start_station_id IS NULL) AS null_start_station_id,
+COUNTIF(end_station_name IS NULL) AS null_end_station_name,
+COUNTIF(end_station_id IS NULL) AS null_end_station_id,
+COUNTIF(start_lat IS NULL) AS null_start_lat,
+COUNTIF(start_lng IS NULL) AS null_start_lng,
+COUNTIF(end_lat IS NULL) AS null_end_lat,
+COUNTIF(end_lng IS NULL) AS null_end_lng,
+COUNTIF(member_casual IS NULL) AS null_member_casual
+FROM `cyclistic-analysis-453511.cyclistic_2022.trips_combine`;
+-- Check for duplicate ride_id (primary key)
+SELECT ride_id,COUNT(*) AS count
+FROM `cyclistic-analysis-453511.cyclistic_2022.trips_combine`
+GROUP BY ride_id
+HAVING count > 1 ;
+--  Verify ride_id length (should be 16 characters)
+SELECT ride_id
+FROM `cyclistic-analysis-453511.cyclistic_2022.trips_combine`
+WHERE LENGTH(ride_id) <> 16;
