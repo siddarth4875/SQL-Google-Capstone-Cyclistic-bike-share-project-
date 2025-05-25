@@ -1,1 +1,1 @@
-# SQL-Google-Capstone-Cyclistic-bike-share-project-
+# SQL-Google-Capstone-Cyclistic-bike-share-project
