@@ -1,4 +1,4 @@
-# SQL_Google_Capstone_Cyclistic_bike_Share-Project
+# SQL_Google_Capstone_Cyclistic_bike_Share_Project
 Google Data Analytics Capstone: Cyclistic Bike-Share Case Study
 
 Ask
